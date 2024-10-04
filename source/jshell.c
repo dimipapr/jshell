@@ -3,6 +3,6 @@
 
 int main(int argc, char ** argv)
 {
-    printf("Hello world!\n");
+    printf("This is the jshell!\n");
     return EXIT_SUCCESS;
 }

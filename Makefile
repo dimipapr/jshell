@@ -1,4 +1,4 @@
-.PHONY: run clean default
+.PHONY: run clean
 
 target = ./bin/jshell
 
