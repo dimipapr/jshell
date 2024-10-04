@@ -1,15 +1,34 @@
-.PHONY: run clean
+SHELL := /bin/bash
+CC := gcc
+CFLAGS = -Wall -g
+LDFLAGS =
 
-target = ./bin/jshell
+SOURCE_DIR = src
+HEADER_DIR = src
+BUILD_DIR = build
+RELEASE_DIR = release
 
-all: target
-	
+TARGET = $(RELEASE_DIR)/jshell
 
-target: ./source/jshell.c
-	gcc ./source/jshell.c -o ./bin/jshell
+SOURCES = $(wildcard $(SOURCE_DIR)/*.c)
+OBJECTS = $(patsubst $(SOURCE_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 
-run: target
-	./bin/jshell
+all:$(TARGET)
+
+$(TARGET):$(OBJECTS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -I$(HEADER_DIR) -I$(SOURCE_DIR) $(OBJECTS) -o $@
+
+$(BUILD_DIR)/%.o:$(SOURCE_DIR)/%.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -I$(HEADER_DIR) -I$(SOURCE_DIR) -c $< -o $@
 
 clean:
-	rm -f ./bin/*
+	@rm -rf $(BUILD_DIR)/* $(RELEASE_DIR)/*
+
+test:
+	@echo "SOURCES : $(SOURCES)"
+	@echo "OBJECTS : $(OBJECTS)"
+
+run:
+	./$(TARGET)
+
+.PHONY: all test clean run
