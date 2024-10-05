@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 CC := gcc
 CFLAGS = -Wall -g
-LDFLAGS =
+LDFLAGS = -lreadline
 
 SOURCE_DIR = src
 HEADER_DIR = src
@@ -16,10 +16,10 @@ OBJECTS = $(patsubst $(SOURCE_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 all:$(TARGET)
 
 $(TARGET):$(OBJECTS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -I$(HEADER_DIR) -I$(SOURCE_DIR) $(OBJECTS) -o $@
+	$(CC) $(CFLAGS) -I$(HEADER_DIR) -I$(SOURCE_DIR) $(OBJECTS) $(LDFLAGS) -o $@
 
 $(BUILD_DIR)/%.o:$(SOURCE_DIR)/%.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -I$(HEADER_DIR) -I$(SOURCE_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(HEADER_DIR) -I$(SOURCE_DIR) $(LDFLAGS) -c $< -o $@
 
 clean:
 	@rm -rf $(BUILD_DIR)/* $(RELEASE_DIR)/*
@@ -28,7 +28,7 @@ test:
 	@echo "SOURCES : $(SOURCES)"
 	@echo "OBJECTS : $(OBJECTS)"
 
-run:
+run:$(TARGET)
 	./$(TARGET)
 
-.PHONY: all test clean run
+.PHONY: all test clean
